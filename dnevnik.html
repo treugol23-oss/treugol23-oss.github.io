@@ -1,0 +1,333 @@
+<title>Дневник чувств</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Golos+Text:wght@400;500;600&display=swap">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+/* Блокнот одной колонкой: рукописные заголовки, как в роликах ВДА-ДФС, спокойные карточки-записи */
+:root {
+  --paper: #F7F2EA; --card: #FFFDF8; --ink: #23332F; --muted: #6B706A; --line: #E4DCCD;
+  --accent: #5E4FA0; --accent-soft: #ECE8F6; --warm: #B23A2E;
+  --hand: "Caveat", "Segoe Print", cursive; --body: "Golos Text", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #1C2221; --card: #252C2A; --ink: #ECE6DA; --muted: #A3A69E; --line: #38403D;
+  --accent: #A99BE6; --accent-soft: #312D45; --warm: #E07A6E; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #1C2221; --card: #252C2A; --ink: #ECE6DA; --muted: #A3A69E; --line: #38403D;
+  --accent: #A99BE6; --accent-soft: #312D45; --warm: #E07A6E; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--paper); color: var(--ink); font: 16px/1.5 var(--body); }
+.wrap { max-width: 560px; margin: 0 auto; padding-block: 12px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1 { font: 700 2.4rem/1 var(--hand); margin: 8px 0 2px; text-wrap: balance }
+h2 { font: 700 1.7rem/1.1 var(--hand); margin: 0; text-wrap: balance }
+.sub { color: var(--muted); margin: 0 0 14px; font-size: .95rem }
+nav { display: flex; gap: 6px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 4px;
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5 }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper) }
+nav button { flex: 1; border: 0; background: none; color: var(--muted); font: 500 .95rem var(--body); padding: 9px 4px; border-radius: 10px; cursor: pointer }
+nav button[aria-selected="true"] { background: var(--accent-soft); color: var(--ink) }
+section { display: grid; gap: 18px; margin-top: 18px }
+.step { display: grid; gap: 8px }
+.label { font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+.chips { display: flex; flex-wrap: wrap; gap: 8px }
+.chip { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 7px 13px;
+  font: 500 .95rem var(--body); cursor: pointer }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--paper) }
+.hint { background: var(--accent-soft); border-radius: 12px; padding: 10px 12px; font-size: .92rem }
+.scale { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px }
+.scale button { aspect-ratio: 1; max-width: 100%; border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  border-radius: 8px; font: 600 .9rem var(--body); font-variant-numeric: tabular-nums; cursor: pointer; padding: 0 }
+.scale button[aria-pressed="true"] { background: var(--warm); border-color: var(--warm); color: var(--paper) }
+.scale-ends { display: flex; justify-content: space-between; font-size: .8rem; color: var(--muted) }
+textarea, input[type=text] { width: 100%; border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  border-radius: 12px; padding: 10px 12px; font: 1rem var(--body); resize: vertical }
+.primary { border: 0; background: var(--ink); color: var(--paper); font: 600 1rem var(--body); padding: 13px; border-radius: 12px; cursor: pointer }
+.primary:disabled { opacity: .4; cursor: default }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.toast { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 4px }
+.toast b { font-family: var(--hand); font-size: 1.4rem; font-weight: 700 }
+.entry { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; padding: 12px 0; border-top: 1px solid var(--line) }
+.entry .n { font: 700 1.6rem/1 var(--hand); color: var(--warm); font-variant-numeric: tabular-nums; grid-row: span 2; min-width: 28px; text-align: center }
+.entry .t { font-weight: 600; min-width: 0 }
+.entry .m { color: var(--muted); font-size: .88rem; min-width: 0 }
+.entry .note { grid-column: 2; font-size: .95rem; overflow-wrap: anywhere }
+.ex { font-size: .72rem; border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; color: var(--muted); margin-left: 6px; font-weight: 500 }
+.chart { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px }
+.chart svg { width: 100%; height: auto; display: block }
+.row-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; gap: 6px }
+.row-card dt { font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted) }
+.row-card dd { margin: 0 0 4px; overflow-wrap: anywhere }
+.row-card .phrase { font: 700 1.35rem/1.2 var(--hand); color: var(--accent) }
+.fields { display: grid; gap: 10px }
+.wheel-box { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px }
+.wheel-box summary { cursor: pointer; font-weight: 500; color: var(--accent) }
+.wheel-note { font-size: .88rem; color: var(--muted); margin: 8px 0 }
+#wheel svg { width: 100%; max-width: 420px; height: auto; display: block; margin: 0 auto }
+#wheel path { cursor: pointer; stroke: var(--card); stroke-width: 1.5 }
+#wheel path:hover, #wheel path.on { stroke: var(--ink); stroke-width: 2.5 }
+#wheel text { pointer-events: none; font-family: var(--body); font-weight: 600 }
+.care { font-size: .85rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; margin-top: 8px }
+@media (prefers-reduced-motion: no-preference) { .toast { animation: rise .3s ease-out } @keyframes rise { from { transform: translateY(6px) } } }
+</style>
+
+<div class="wrap">
+  <h1>Дневник чувств</h1>
+  <p class="sub">Марафон «Шаг» · ВДА-ДФС. Записи видите только вы.</p>
+  <nav role="tablist">
+    <button role="tab" id="tab-now" aria-selected="true" data-tab="now">Сейчас</button>
+    <button role="tab" id="tab-log" aria-selected="false" data-tab="log">Мои записи</button>
+    <button role="tab" id="tab-trait" aria-selected="false" data-tab="trait">Таблица черты</button>
+  </nav>
+
+  <section id="now">
+    <div class="step">
+      <span class="label">Что я сейчас чувствую?</span>
+      <div class="chips" id="feelings"></div>
+      <div class="hint" id="feel-hint">Выберите чувство. Если ничего не чувствуется, нажмите «Не знаю»: это тоже честный ответ.</div>
+      <details class="wheel-box" id="wheel-box">
+        <summary>Не понимаю, что чувствую: открыть колесо эмоций</summary>
+        <p class="wheel-note">Если вы не понимаете, что чувствуете, посмотрите на колесо и просто доверьтесь интуиции: какое слово откликается? Нажмите на него. Так, понемногу, вы научитесь распознавать свои чувства. Ближе к центру чувства сильнее, к краю мягче.</p>
+        <div id="wheel"></div>
+        <p class="wheel-note">Колесо эмоций Роберта Плутчика: 8 базовых эмоций и их оттенки. Между лепестками — чувства-смеси.</p>
+      </details>
+    </div>
+    <div class="step">
+      <span class="label">Где это в теле?</span>
+      <div class="chips" id="body"></div>
+    </div>
+    <div class="step">
+      <span class="label">Насколько сильно?</span>
+      <div class="scale" id="scale"></div>
+      <div class="scale-ends"><span>чуть-чуть</span><span>накрывает</span></div>
+    </div>
+    <div class="step">
+      <label class="label" for="note">Что произошло (необязательно)</label>
+      <textarea id="note" rows="2" placeholder="Например: водитель грубо ответил при оплате"></textarea>
+    </div>
+    <button class="primary" id="save" disabled>Записать</button>
+    <div id="after"></div>
+  </section>
+
+  <section id="log" hidden>
+    <div class="chart">
+      <span class="label">Последние 7 дней · средняя сила чувств</span>
+      <div id="chart"></div>
+    </div>
+    <div id="entries"></div>
+  </section>
+
+  <section id="trait" hidden>
+    <p class="sub" style="margin:0">Задание 5-го дня. Возьмите одну черту и посмотрите, откуда она. Можно заполнить не всё и остановиться в любой момент.</p>
+    <div class="fields">
+      <input type="text" id="t-trait" placeholder="Черта: например, страх критики">
+      <textarea id="t-event" rows="2" placeholder="Событие: что произошло (детство или взрослая жизнь)"></textarea>
+      <textarea id="t-why" rows="2" placeholder="Почему это произошло, как я это тогда поняла"></textarea>
+      <input type="text" id="t-feel" placeholder="Что я чувствовала">
+      <input type="text" id="t-body" placeholder="Что было в теле">
+      <textarea id="t-now" rows="2" placeholder="Как это проявляется сейчас"></textarea>
+      <input type="text" id="t-phrase" placeholder="Поддерживающая фраза себе">
+      <button class="primary" id="t-save">Сохранить строчку</button>
+    </div>
+    <div id="rows" style="display:grid;gap:12px"></div>
+    <p class="care">После задания положите руку на грудь, сделайте 3 медленных выдоха, оглядитесь и назовите 5 предметов вокруг.</p>
+  </section>
+
+  <p class="care">Дневник не заменяет терапию и лечение. Если становится тяжело, остановитесь, подышите и напишите Елене: @Elena_psi. При остром состоянии обращайтесь к врачу.</p>
+</div>
+
+<script>
+const tg = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData ? window.Telegram.WebApp : null;
+if (tg) { tg.ready(); tg.expand(); document.documentElement.dataset.theme = tg.colorScheme; }
+
+// подсказки о теле: из марафона и из исследования «телесных карт эмоций» (Nummenmaa и др., 2014)
+const FEELINGS = {
+  "Страх": "Сердце стучит, дыхание частое, сжимает грудь, холодеют руки, слабеют ноги, всё внутри настороже.",
+  "Гнев": "Жар в голове и лице, сжаты челюсти и кулаки, напряжены плечи и руки, хочется ударить или крикнуть.",
+  "Стыд": "Горят щёки и лицо, крутит живот, хочется сжаться, опустить глаза и исчезнуть, кажется, что все смотрят.",
+  "Вина": "Тяжесть в груди и плечах, неловкость за то, что я сделала. Стыд — про то, какая я есть.",
+  "Покинутость": "Будто тело стало маленьким, пустота в груди, меня забыли, я одна.",
+  "Грусть": "Тяжесть в груди, ком в горле, слёзы близко, руки и ноги будто ватные, не хочется двигаться.",
+  "Тревога": "Трепет в груди и животе, неглубокое дыхание, трудно усидеть на месте.",
+  "Отвращение": "Подташнивает, сжимается горло, хочется отвернуться или отодвинуться.",
+  "Радость": "Тепло и энергия разливаются по всему телу, легко дышать, хочется двигаться.",
+  "Спокойствие": "Опора под ногами, дышится свободно, мысли здесь.",
+  "Не знаю": "Чувства, которые долго были под замком, возвращаются не сразу. Это нормально. Попробуйте колесо эмоций ниже."
+};
+// колесо Плутчика: [слабее, базовая, сильнее], цвет, подсказка о теле по базовой эмоции
+const WHEEL = [
+  [["Безмятежность", "Радость", "Восторг"], "#F2C94C", "Радость"],
+  [["Принятие", "Доверие", "Восхищение"], "#8CC152", null],
+  [["Опасение", "Страх", "Ужас"], "#2E9E6A", "Страх"],
+  [["Отвлечённость", "Удивление", "Изумление"], "#3AA6C9", null],
+  [["Задумчивость", "Грусть", "Горе"], "#4A73C6", "Грусть"],
+  [["Скука", "Неприязнь", "Отвращение"], "#9468C0", "Отвращение"],
+  [["Досада", "Гнев", "Ярость"], "#D9483B", "Гнев"],
+  [["Интерес", "Ожидание", "Настороженность"], "#EE8E3A", null]
+];
+const DYADS = ["Любовь", "Покорность", "Трепет", "Неодобрение", "Раскаяние", "Презрение", "Агрессивность", "Оптимизм"];
+const WHEEL_HINT = {
+  "Доверие": "Расслаблены плечи, тело открыто, хочется приблизиться.",
+  "Удивление": "Дыхание замирает, брови вверх, внимание резко собирается.",
+  "Ожидание": "Тело чуть подаётся вперёд, внимание собрано, лёгкое напряжение."
+};
+const BODY = ["Голова", "Горло", "Грудь", "Живот", "Плечи", "Спина", "Руки", "Ноги", "Всё тело", "Не замечаю"];
+
+// Хранилище: облако Telegram у каждого человека своё; вне Telegram — память браузера
+const store = {
+  async get(key) {
+    if (tg && tg.CloudStorage) return new Promise(r => tg.CloudStorage.getItem(key, (e, v) => r(e ? null : v)));
+    try { return localStorage.getItem(key) } catch { return null }
+  },
+  async set(key, val) {
+    if (tg && tg.CloudStorage) return new Promise(r => tg.CloudStorage.setItem(key, val, () => r()));
+    try { localStorage.setItem(key, val) } catch {}
+  }
+};
+// облако Telegram держит до 4096 символов в ключе — записи хранятся по месяцам
+const monthKey = d => "e" + d.toISOString().slice(0, 7).replace("-", "");
+async function loadEntries() {
+  const now = new Date(), keys = [0, 1].map(k => monthKey(new Date(now.getFullYear(), now.getMonth() - k, 15)));
+  const lists = await Promise.all(keys.map(async k => JSON.parse(await store.get(k) || "[]")));
+  return lists.flat().sort((a, b) => b.ts - a.ts);
+}
+async function addEntry(e) {
+  const k = monthKey(new Date(e.ts)), list = JSON.parse(await store.get(k) || "[]");
+  list.push(e);
+  while (JSON.stringify(list).length > 4000) list.shift();
+  await store.set(k, JSON.stringify(list));
+}
+async function loadRows() { return JSON.parse(await store.get("traits") || "[]") }
+
+// пример, пока записей нет: виден только вне Telegram (предпросмотр)
+const DAY = 864e5;
+const SAMPLE = [
+  { ts: Date.now() - 0.2 * DAY, f: "Спокойствие", b: "Ноги", n: 3, note: "Гуляла после работы", ex: 1 },
+  { ts: Date.now() - 1.1 * DAY, f: "Страх", b: "Грудь", n: 8, note: "Водитель грубо ответил при оплате", ex: 1 },
+  { ts: Date.now() - 2.3 * DAY, f: "Стыд", b: "Горло", n: 6, note: "Не смогла сказать «нет» коллеге", ex: 1 },
+  { ts: Date.now() - 3.2 * DAY, f: "Грусть", b: "Грудь", n: 5, note: "", ex: 1 },
+  { ts: Date.now() - 5.1 * DAY, f: "Не знаю", b: "Не замечаю", n: 2, note: "", ex: 1 }
+];
+const SAMPLE_ROW = { trait: "Страх критики", event: "Отец кричал на меня за ошибку", why: "Говорил, что я не слушаю",
+  feel: "Испуг, я маленькая", body: "Крутило живот, трудно дышать", now: "Когда повышают голос, сжимаюсь или хочу наброситься",
+  phrase: "Я достойный человек, и я принимаю себя в любом состоянии", ex: 1 };
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const pick = { f: null, b: null, n: null };
+
+function chips(el, items, key, onPick) {
+  el.innerHTML = items.map(t => `<button class="chip" aria-pressed="false">${esc(t)}</button>`).join("");
+  el.querySelectorAll("button").forEach(btn => btn.onclick = () => {
+    el.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === btn));
+    pick[key] = btn.textContent; onPick && onPick(btn.textContent); check();
+    tg && tg.HapticFeedback && tg.HapticFeedback.selectionChanged();
+  });
+}
+chips($("feelings"), Object.keys(FEELINGS), "f", f => $("feel-hint").textContent = FEELINGS[f]);
+chips($("body"), BODY, "b");
+
+function drawWheel() {
+  const C = 160, R = [28, 72, 112, 150], step = Math.PI / 4;
+  const pt = (r, a) => [C + r * Math.sin(a), C - r * Math.cos(a)].map(v => v.toFixed(1));
+  const sector = (r0, r1, a0, a1) => { const [p, q, s, t] = [pt(r1, a0), pt(r1, a1), pt(r0, a1), pt(r0, a0)];
+    return `M${p} A${r1} ${r1} 0 0 1 ${q} L${s} A${r0} ${r0} 0 0 0 ${t}Z` };
+  let s = `<svg viewBox="-34 -14 388 348" role="img" aria-label="Колесо эмоций Плутчика">`;
+  WHEEL.forEach(([names, color, hintKey], i) => {
+    const a0 = i * step - step / 2 + 0.03, a1 = (i + 1) * step - step / 2 - 0.03, mid = i * step;
+    // ряды от центра к краю: сильная, базовая, слабая
+    [[2, R[0], R[1], 1], [1, R[1], R[2], .72], [0, R[2], R[3], .42]].forEach(([k, r0, r1, op]) => {
+      const name = names[k], [tx, ty] = pt((r0 + r1) / 2 + (k === 2 ? 6 : 0), mid);
+      s += `<path d="${sector(r0, r1, a0, a1)}" fill="${color}" fill-opacity="${op}" data-name="${name}" data-hint="${hintKey || names[1]}"></path>`;
+      s += `<text x="${tx}" y="${ty}" text-anchor="middle" dominant-baseline="middle" font-size="${k === 1 ? 10.5 : 8.6}" fill="var(--ink)">${name}</text>`;
+    });
+    const [dx, dy] = pt(R[3] + 14, mid + step / 2);
+    s += `<text x="${dx}" y="${dy}" text-anchor="middle" dominant-baseline="middle" font-size="9" fill="var(--muted)">${DYADS[i]}</text>`;
+  });
+  $("wheel").innerHTML = s + "</svg>";
+  $("wheel").querySelectorAll("path").forEach(p => p.onclick = () => {
+    $("wheel").querySelectorAll("path").forEach(x => x.classList.toggle("on", x === p));
+    $("feelings").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", "false"));
+    const name = p.dataset.name, base = p.dataset.hint;
+    pick.f = name; check();
+    $("feel-hint").textContent = `${name}. ${FEELINGS[base] || WHEEL_HINT[base] || ""}`;
+    tg && tg.HapticFeedback && tg.HapticFeedback.selectionChanged();
+  });
+}
+drawWheel();
+$("scale").innerHTML = Array.from({ length: 10 }, (_, i) => `<button aria-pressed="false" aria-label="Сила ${i + 1}">${i + 1}</button>`).join("");
+$("scale").querySelectorAll("button").forEach((btn, i) => btn.onclick = () => {
+  $("scale").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === btn)); pick.n = i + 1; check();
+});
+function check() { $("save").disabled = !(pick.f && pick.b && pick.n) }
+
+$("save").onclick = async () => {
+  const e = { ts: Date.now(), f: pick.f, b: pick.b, n: pick.n, note: $("note").value.trim() };
+  await addEntry(e);
+  const strong = e.n >= 8;
+  $("after").innerHTML = `<div class="toast"><b>Записано</b><span>${esc(e.f)} · ${esc(e.b.toLowerCase())} · ${e.n} из 10.</span>
+    ${strong ? "<span>Сильно. Подумайте: эта ситуация стоила такой силы? Если реакция больше события, часто отзывается что-то старое. А сейчас сделайте 3 медленных выдоха.</span>"
+             : "<span>Вы отделили чувство от мысли. Это первый шаг.</span>"}</div>`;
+  ["feelings", "body", "scale"].forEach(id => $(id).querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", "false")));
+  Object.assign(pick, { f: null, b: null, n: null }); $("note").value = ""; check();
+  tg && tg.HapticFeedback && tg.HapticFeedback.notificationOccurred("success");
+};
+
+function fmt(ts) { return new Date(ts).toLocaleString("ru-RU", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) }
+
+function drawChart(list) {
+  const days = Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - 6 + i); return d });
+  const avg = days.map(d => { const xs = list.filter(e => e.ts >= +d && e.ts < +d + DAY).map(e => e.n);
+    return xs.length ? xs.reduce((a, b) => a + b) / xs.length : null });
+  const W = 320, H = 150, L = 22, B = 22, T = 10, bw = (W - L) / 7;
+  const y = v => T + (H - T - B) * (1 - v / 10);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Средняя сила чувств по дням">`;
+  [0, 5, 10].forEach(v => s += `<line x1="${L}" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/>
+    <text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${v}</text>`);
+  days.forEach((d, i) => {
+    const x = L + i * bw, v = avg[i];
+    if (v != null) s += `<rect x="${x + bw * 0.22}" y="${y(v)}" width="${bw * 0.56}" height="${y(0) - y(v)}" rx="4" fill="${v >= 8 ? "var(--warm)" : "var(--accent)"}"/>
+      <text x="${x + bw / 2}" y="${y(v) - 4}" text-anchor="middle" font-size="10" fill="var(--ink)">${v.toFixed(1).replace(".0", "")}</text>`;
+    s += `<text x="${x + bw / 2}" y="${H - 6}" text-anchor="middle" font-size="10" fill="var(--muted)">${d.toLocaleDateString("ru-RU", { weekday: "short" })}</text>`;
+  });
+  $("chart").innerHTML = s + "</svg>";
+}
+
+async function renderLog() {
+  let list = await loadEntries();
+  if (!list.length && !tg) list = SAMPLE;
+  drawChart(list);
+  $("entries").innerHTML = list.length ? list.map(e => `<div class="entry"><span class="n">${e.n}</span>
+      <span class="t">${esc(e.f)}${e.ex ? '<span class="ex">пример</span>' : ""}</span>
+      <span class="m">${esc(e.b)} · ${fmt(e.ts)}</span>${e.note ? `<span class="note">${esc(e.note)}</span>` : ""}</div>`).join("")
+    : `<p class="sub">Здесь появятся ваши записи. Начните во вкладке «Сейчас»: 3 раза за день остановитесь и спросите себя, что вы чувствуете.</p>`;
+}
+
+const TF = [["trait", "Черта"], ["event", "Событие"], ["why", "Почему это произошло"], ["feel", "Что я чувствовала"], ["body", "Что было в теле"], ["now", "Как это проявляется сейчас"]];
+async function renderRows() {
+  let rows = await loadRows();
+  if (!rows.length && !tg) rows = [SAMPLE_ROW];
+  $("rows").innerHTML = rows.map(r => `<dl class="row-card">${TF.filter(([k]) => r[k]).map(([k, t]) =>
+    `<div><dt>${t}${k === "trait" && r.ex ? '<span class="ex">пример</span>' : ""}</dt><dd>${esc(r[k])}</dd></div>`).join("")}
+    ${r.phrase ? `<div class="phrase">«${esc(r.phrase)}»</div>` : ""}</dl>`).reverse().join("");
+}
+$("t-save").onclick = async () => {
+  const r = Object.fromEntries([...TF.map(([k]) => k), "phrase"].map(k => [k, $("t-" + k).value.trim()]));
+  if (!Object.values(r).some(Boolean)) return;
+  const rows = await loadRows(); rows.push(r);
+  while (JSON.stringify(rows).length > 4000) rows.shift();
+  await store.set("traits", JSON.stringify(rows));
+  [...TF.map(([k]) => k), "phrase"].forEach(k => $("t-" + k).value = "");
+  renderRows();
+};
+
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
+  document.querySelectorAll("nav button").forEach(x => x.setAttribute("aria-selected", x === b));
+  ["now", "log", "trait"].forEach(id => $(id).hidden = id !== b.dataset.tab);
+  if (b.dataset.tab === "log") renderLog();
+  if (b.dataset.tab === "trait") renderRows();
+});
+renderRows();
+</script>
