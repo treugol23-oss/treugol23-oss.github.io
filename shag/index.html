@@ -37,6 +37,7 @@ button { font: inherit; color: inherit }
 .tile { text-align: left; cursor: pointer; display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 12px }
 .tile .ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 1.35rem; background: var(--accent-soft) }
 .tile .go { color: var(--muted); font-size: 1.2rem }
+a.tile { color: inherit; text-decoration: none }
 .tile.warm .ic { background: var(--warm-soft) } .tile.sage .ic { background: var(--sage-soft) }
 .done-mark { color: var(--sage); font-weight: 600; font-size: .85rem }
 .chips { display: flex; flex-wrap: wrap; gap: 8px }
@@ -65,7 +66,7 @@ textarea, input[type=text] { width: 100%; border: 1px solid var(--line); backgro
 /* нижнее меню */
 .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--card); border-top: 1px solid var(--line);
   padding: 6px max(8px, env(safe-area-inset-left, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)); }
-.tabbar div { max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr) }
+.tabbar div { max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr) }
 .tabbar button { border: 0; background: none; display: grid; justify-items: center; gap: 1px; padding: 4px 0; cursor: pointer; color: var(--muted); font-size: .72rem; font-weight: 500 }
 .tabbar button span { font-size: 1.3rem; line-height: 1.2; filter: grayscale(1); opacity: .7 }
 .tabbar button[aria-selected="true"] { color: var(--ink) }
@@ -119,6 +120,27 @@ details.more p { margin-top: 8px }
 .zone h2 { font: 700 1.7rem/1.1 var(--hand); margin: 0 }
 .bars { display: grid; gap: 6px; font-size: .9rem } .bars div { display: grid; grid-template-columns: 1fr 90px; gap: 8px; align-items: center }
 .bars i { display: block; height: 8px; border-radius: 4px; background: var(--sage) }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+.pl { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 16px 10px 14px; display: grid; justify-items: center; gap: 6px; text-align: center; min-height: 128px; align-content: center; cursor: pointer; color: inherit; text-decoration: none; font: inherit }
+.pl .i { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; font-size: 1.5rem; background: var(--accent-soft) }
+.pl.w .i { background: var(--warm-soft) } .pl.s .i { background: var(--sage-soft) }
+.pl b { font-weight: 600; font-size: 1rem; line-height: 1.2 } .pl small { color: var(--muted); font-size: .8rem; line-height: 1.25 }
+.pl.sos { background: var(--warm-soft); border-color: transparent } .pl.sos .i { background: var(--card) }
+.main-btn { border: 1px solid #CFC5E4; background: #ECE7F5; color: var(--ink); border-radius: 20px; padding: 16px 18px; display: grid; grid-template-columns: 48px 1fr auto; gap: 12px; align-items: center; text-align: left; cursor: pointer; width: 100%; font: inherit }
+.main-btn .i { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; font-size: 1.45rem; background: rgba(255,255,255,.75) }
+.main-btn b { font-size: 1.08rem; display: block } .main-btn small { color: var(--muted); font-size: .88rem; display: block; margin-top: 2px } .main-btn .go { font-size: 1.4rem; color: var(--muted) }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .main-btn { background: #2F2B3B; border-color: #4A4360 } :root:not([data-theme="light"]) .main-btn .i { background: rgba(255,255,255,.08) } }
+:root[data-theme="dark"] .main-btn { background: #2F2B3B; border-color: #4A4360 } :root[data-theme="dark"] .main-btn .i { background: rgba(255,255,255,.08) }
+.dots { display: flex; gap: 5px; flex-wrap: wrap } .dots i { width: 16px; height: 6px; border-radius: 3px; background: var(--line) } .dots i.d { background: var(--sage) } .dots i.c { background: var(--warm) }
+.put-card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 18px; display: grid; gap: 10px }
+.put-card h2 { font: 700 2rem/1.05 var(--hand); margin: 0 }
+.put-list { display: grid; gap: 6px; font-size: .92rem } .put-list div { display: grid; grid-template-columns: 26px 1fr; gap: 8px } .put-list .n { color: var(--sage); font-weight: 600 }
+.amt { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px }
+.amt span { border: 1px dashed var(--line); border-radius: 12px; padding: 10px 0; text-align: center; font-weight: 600; color: var(--muted) }
+.lnk { display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; align-items: center; color: inherit; text-decoration: none }
+.lnk .i { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 1.3rem; background: var(--accent-soft) }
+.lnk.s .i { background: var(--sage-soft) } .lnk.w .i { background: var(--warm-soft) } .lnk .go { color: var(--muted); font-size: 1.2rem }
+.tag { display: inline-block; font-size: .7rem; padding: 1px 8px; border-radius: 99px; background: var(--sage-soft); color: var(--sage); font-weight: 600; margin-left: 6px; vertical-align: 2px }
 [hidden] { display: none !important }
 </style></head><body>
 
@@ -127,18 +149,71 @@ details.more p { margin-top: 8px }
 <!-- СЕГОДНЯ -->
 <section id="v-home">
   <h1 id="hello">Привет!</h1>
-  <button class="hero" id="hero" data-go="express"><h2>Один шаг к себе</h2><p>Это не характер. Это то, чему вас научили в детстве. 14 коротких вопросов — 2 минуты.</p><span class="cta">Начать</span></button>
-  <p class="sub">Маленький шаг каждый день. Записи видите только вы.</p>
+  <button class="hero" id="hero" data-go="express"><h2>Один шаг к себе</h2><p>Все мы родом из детства: наш характер во многом складывается из того, чему нас научили. Узнайте за 2 минуты, что из прошлого опыта сильнее всего влияет на вас сейчас, — и пройдите путь на 14 дней маленькими шагами.</p><span class="cta">Пройти тест</span></button>
+  <button class="main-btn" id="put-btn" data-go="put"><span class="i">👣</span><span><b id="put-btn-t">Мой путь на 14 дней</b><small id="put-btn-s">Одно маленькое задание каждый день</small></span><span class="go">›</span></button>
+  <div class="grid">
+    <button class="pl" data-go="diary"><span class="i">💛</span><b>Что я чувствую</b><small id="home-diary">1 минута</small></button>
+    <button class="pl s" data-go="evening"><span class="i">🌙</span><b>Инвентаризация</b><small id="home-eve">10-й шаг · вечером</small></button>
+    <button class="pl w" id="home-trait"><span class="i">🧭</span><b id="home-trait-t">Особенности характера</b><small id="home-trait-s">14 черт · тест</small></button>
+    <button class="pl" data-go="read"><span class="i">📖</span><b>Почитать</b><small>статьи и ролики</small></button>
+    <button class="pl s" data-go="group"><span class="i">👥</span><b>Группа и марафон</b><small>живые встречи</small></button>
+    <button class="pl w" data-go="partners"><span class="i">🤝</span><b>Партнёры</b><small>проверенные места</small></button>
+    <button class="pl sos" data-go="sos"><span class="i">🫶</span><b>Накрыло</b><small>помогите сейчас</small></button>
+    <a class="pl" id="otklik" href="https://t.me/shag_marafon_bot?start=otklik" target="_blank" rel="noopener"><span class="i">✍️</span><b>Поделиться откликом</b><small>анонимно</small></a>
+  </div>
   <div class="card">
     <span class="label">Последние 7 дней</span>
     <div class="streak" id="streak"></div>
   </div>
-  <button class="card tile warm" id="home-trait"><span class="ic">🧭</span><span><h3 id="home-trait-t">Особенности характера</h3><span class="sub" id="home-trait-s">Тест на 3 минуты: какие из 14 особенностей про меня</span></span><span class="go">›</span></button>
-  <button class="card tile sage" data-go="evening"><span class="ic">🌙</span><span><h3>Вечерние 5 минут</h3><span class="sub" id="home-eve">Как прошёл день · 10-й шаг</span></span><span class="go">›</span></button>
-  <button class="card tile" data-go="diary"><span class="ic">💛</span><span><h3>Что я сейчас чувствую?</h3><span class="sub" id="home-diary">1 минута · дневник чувств</span></span><span class="go">›</span></button>
-  <button class="sos-btn" data-go="sos">🫶 Накрыло — помогите сейчас</button>
   <div class="card install" id="install" hidden></div>
   <p class="care">«Шаг» не заменяет терапию и лечение. При остром состоянии обращайтесь к врачу.<br>Больше материалов, запись на консультацию и в группу — в Telegram-канале <a href="https://t.me/vdadfs_psi">«Психолог на удалёнке»</a>.</p>
+</section>
+
+<!-- ПУТЬ 14 ДНЕЙ -->
+<section id="v-put" hidden>
+  <button class="back" data-go="home">‹ Назад</button>
+  <div id="put-body" class="step" style="gap:16px"></div>
+</section>
+
+<!-- ПОЧИТАТЬ -->
+<section id="v-read" hidden>
+  <button class="back" data-go="home">‹ Назад</button>
+  <h2>Почитать</h2>
+  <p class="sub">Статьи и ролики Елены Подугольниковой, гештальт-терапевта.</p>
+  <a class="card lnk" href="https://telegra.ph/Lyubit-ili-derzhatsya-EHmocionalnaya-zavisimost-i-vzroslye-deti-alkogolikov-11-10" target="_blank" rel="noopener"><span class="i">📄</span><span><b>Любить или держаться?</b><br><span class="sub">Эмоциональная зависимость и взрослые дети</span></span><span class="go">›</span></a>
+  <a class="card lnk s" href="https://t.me/vdadfs_psi" target="_blank" rel="noopener"><span class="i">💬</span><span><b>Telegram-канал «Психолог на удалёнке»</b><br><span class="sub">посты, короткие ролики, опросы</span></span><span class="go">›</span></a>
+  <a class="card lnk w" href="https://treugol23-oss.github.io" target="_blank" rel="noopener"><span class="i">🌿</span><span><b>Сайт Елены</b><br><span class="sub">о подходе, консультации, программа</span></span><span class="go">›</span></a>
+</section>
+
+<!-- ГРУППА И МАРАФОН -->
+<section id="v-group" hidden>
+  <button class="back" data-go="home">‹ Назад</button>
+  <h2>Группа и марафон</h2>
+  <div class="card"><span class="label">Бесплатный марафон «Шаг» · 7 дней</span><p>Каждое утро короткое видео Елены и задание. Можно отвечать, Елена читает сама. В конце — живая встреча.</p>
+    <a class="ghost" style="text-align:center;text-decoration:none" href="https://t.me/shag_marafon_bot" target="_blank" rel="noopener">Записаться в боте марафона</a></div>
+  <div class="card"><span class="label">Терапевтическая группа · с января</span><p>Небольшая онлайн-группа: теория и практика для тех, кто вырос в дисфункциональной семье. Запись — через Telegram-канал.</p>
+    <a class="ghost" style="text-align:center;text-decoration:none" href="https://t.me/vdadfs_psi" target="_blank" rel="noopener">Узнать о группе</a></div>
+</section>
+
+<!-- ПАРТНЁРЫ -->
+<section id="v-partners" hidden>
+  <button class="back" data-go="home">‹ Назад</button>
+  <h2>Партнёры «Шага»</h2>
+  <p class="sub">Места и люди, которым можно доверять. Раздел наполняется.</p>
+  <div class="card lnk s"><span class="i">🧑‍⚕️</span><span><b>Психологи</b><span class="tag">скоро</span><br><span class="sub">коллеги, которые работают с темой семьи и детства</span></span></div>
+  <div class="card lnk"><span class="i">🫂</span><span><b>Группы 12 шагов</b><span class="tag">скоро</span><br><span class="sub">бесплатные встречи ВДА и Ал-Анон</span></span></div>
+  <div class="card lnk w"><span class="i">🧘</span><span><b>Тело и отдых</b><span class="tag">скоро</span><br><span class="sub">йога, массаж, ретриты</span></span></div>
+  <a class="ghost otk" style="text-align:center;text-decoration:none" href="https://t.me/shag_marafon_bot?start=otklik" target="_blank" rel="noopener">Хотите стать партнёром? Напишите</a>
+</section>
+
+<!-- СПАСИБО -->
+<section id="v-thanks" hidden>
+  <h2>Поблагодарить</h2>
+  <p class="sub">«Шаг» бесплатный и останется бесплатным. Если он вам помог, можно поддержать проект.</p>
+  <div class="card"><span class="label">Поддержать</span><div class="amt"><span>100 ₽</span><span>300 ₽</span><span>500 ₽</span></div><p class="sub">Скоро здесь появится перевод.</p></div>
+  <button class="card lnk" id="share"><span class="i">💬</span><span style="text-align:left"><b>Рассказать подруге</b><br><span class="sub">отправить ссылку на «Шаг»</span></span><span class="go">›</span></button>
+  <a class="card lnk s otk" href="https://t.me/shag_marafon_bot?start=otklik" target="_blank" rel="noopener"><span class="i">✍️</span><span><b>Поделиться откликом</b><br><span class="sub">анонимно: что откликнулось, чего не хватает</span></span><span class="go">›</span></a>
+  <button class="card lnk w" data-go="partners"><span class="i">🤝</span><span style="text-align:left"><b>Партнёры «Шага»</b><br><span class="sub">проверенные места</span></span><span class="go">›</span></button>
 </section>
 
 <!-- ДНЕВНИК -->
@@ -168,7 +243,7 @@ details.more p { margin-top: 8px }
 
 <!-- ВЕЧЕР -->
 <section id="v-evening" hidden>
-  <h2>Вечерние 5 минут</h2>
+  <h2>Инвентаризация</h2>
   <p class="sub">10-й шаг: спокойно посмотреть на свой день. Без оценок, просто заметить.</p>
   <div id="eve-form" class="step" style="gap:16px"></div>
   <div id="eve-after"></div>
@@ -231,6 +306,7 @@ details.more p { margin-top: 8px }
   <button data-go="diary" aria-selected="false"><span>💛</span>Дневник</button>
   <button data-go="traits" aria-selected="false"><span>🧭</span>Характер</button>
   <button data-go="evening" aria-selected="false"><span>🌙</span>Вечер</button>
+  <button data-go="thanks" aria-selected="false"><span>🎁</span>Спасибо</button>
 </div></nav>
 
 <script>
@@ -670,6 +746,10 @@ const TRAITS = [
  }
 ];
 const tg = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData ? window.Telegram.WebApp : null;
+const PUT = {"rel": {"t": "Отношения и зависимость", "days": [["Чьё это «да»?", "Сегодня заметьте один раз, когда вы сказали «да», а внутри было «нет». Ничего не меняйте. Просто запишите: кому, на что и что почувствовали."], ["Где я заканчиваюсь", "Вспомните последний разговор с близким человеком. Чего в нём хотели вы? Не он, не она — вы. Запишите одной фразой."], ["Тело подскажет", "Когда сегодня будете рядом с важным человеком, прислушайтесь к телу: где напряжено, где свободно? Тело часто знает раньше головы."], ["Я жду ответа", "Если сегодня ждёте сообщения или звонка, заметьте, что происходит с вами в ожидании. Как бы вы назвали это чувство?"], ["Откуда это у меня", "В детстве за что вас хвалили и любили сильнее всего? За удобство, помощь, успехи, тишину? Запишите. Это не упрёк родителям, это карта."], ["Скучаю или страшно?", "Задайте себе вопрос: «Я скучаю по человеку — или мне страшно остаться одной с собой?» Ответьте честно, даже если ответ неприятный."], ["Тихая или обжигающая", "Какие отношения в вашей жизни похожи на тихую привязанность («жизни нет, но как же я брошу»), а какие — на качели? Просто назовите."], ["Что я получаю", "Даже в трудных отношениях мы что-то получаем: чувство нужности, предсказуемость, не-одиночество. Что получаете вы? Без оценок."], ["Маленькое «нет»", "Скажите сегодня одно маленькое «нет» там, где обычно говорите «да». Самое безопасное. И заметьте: мир не рухнул."], ["Одно место, где тепло", "Сделайте сегодня что-то, что тёплое только для вас: встреча с подругой, прогулка, любимое дело. Одна опора кроме отношений."], ["Пауза перед ответом", "Перед тем как ответить на просьбу, возьмите паузу: «Я подумаю и скажу». Даже если потом скажете «да»."], ["Сказать о себе", "Скажите близкому человеку одну фразу о своём чувстве, начиная с «я»: «Мне было обидно», «Мне хочется…». Без обвинений."], ["Что изменилось", "Перечитайте записи за эти дни. Где вы сегодня чуть больше принадлежите себе, чем две недели назад? Даже на миллиметр."], ["Письмо себе", "Напишите себе через 14 дней короткое письмо: что вы хотите продолжать. «Шаг» напомнит. И пройдите экспресс-тест ещё раз."]]}, "anx": {"t": "Тревога и страх", "days": [["Где живёт тревога", "Когда сегодня станет тревожно, положите руку туда, где это ощущается в теле. Просто заметьте место. Это уже контакт, а не бегство."], ["Пять выдохов", "Сделайте пять медленных выдохов — длиннее, чем вдох. Три раза за день: утром, днём, вечером. Отметьте, что изменилось."], ["Что я сейчас вижу", "В тревожный момент назовите три вещи, которые видите, две — которые слышите, одну — которую чувствуете кожей. Вы здесь, сейчас."], ["Сценарий катастрофы", "Запишите одну тревожную мысль дня целиком: «Если…, то…». Не спорьте с ней. Просто посмотрите на неё на бумаге."], ["Кто научил бояться", "В детстве что было непредсказуемым? Настроение мамы, папин запой, строгость, крики, болезнь? Тревога когда-то была вашей охраной."], ["Сигнал, а не приказ", "Вспомните, когда тревога сегодня что-то «приказывала»: проверить, перезвонить, переделать. Что было бы, если не послушаться сразу?"], ["Что я контролирую", "Разделите лист на две части: «Могу повлиять» и «Не могу». Распишите сегодняшнюю тревогу по колонкам."], ["Нормально не знать", "Найдите одну ситуацию, где вы не знаете, чем всё кончится. Скажите себе: «Я пока не знаю. И я с этим справлюсь»."], ["Отложить проверку", "Если хочется что-то проверить (сообщения, замок, письмо), отложите на 10 минут. Заметьте, как тревога растёт и спадает сама."], ["Безопасное место", "Найдите место, где вам спокойно: комната, кресло, парк, плед. Проведите там 10 минут без телефона."], ["Попросить поддержки", "Напишите одному человеку о том, что вам сейчас тревожно. Не за советом — просто чтобы не быть одной."], ["Маленький риск", "Сделайте одно маленькое дело, которое откладывали из страха. Самое маленькое. Отметьте, что почувствовали после."], ["Что изменилось", "Перечитайте записи. В какие моменты тревога стала чуть тише? Что вам помогало — это ваши собственные инструменты."], ["Моя аптечка", "Соберите «аптечку» из 3–5 приёмов, которые вам помогли. «Шаг» сохранит её в «Накрыло». И пройдите экспресс-тест ещё раз."]]}, "all": {"t": "Всё на мне", "days": [["Чья это ноша", "Заметьте сегодня одно дело, которое вы взяли на себя, хотя оно не ваше. Не бросайте его, просто отметьте: «это не моё»."], ["Список «должна»", "Выпишите все «я должна» за день. Рядом с каждым пометьте: кто на самом деле этого ждёт?"], ["Усталость в теле", "Вечером спросите тело: где я устала больше всего? Положите туда руку и скажите: «Я вижу, что ты устала»."], ["Вина за отдых", "Заметьте, что вы чувствуете, когда отдыхаете, а кто-то рядом работает. Вина, тревога, стыд? Просто назовите."], ["Ребёнок-взрослый", "За кого вы отвечали в детстве? За младших, за маму, за мир в семье, за папины оценки? Сколько вам тогда было лет?"], ["Если не я, то кто", "Вспомните фразу «если не я, то никто». Откуда она? Кто бы на самом деле справился, если бы вы не взялись?"], ["Спасатель устал", "Где вы сейчас спасаете кого-то, кто не просил? Что вы при этом получаете — чувство нужности, контроль, спокойствие?"], ["Мои потребности", "Напишите три вещи, которые нужны вам — не детям, не мужу, не работе. Даже если кажется, что «потом»."], ["Не взять", "Найдите сегодня одно дело, которое не ваше, и не берите его. Пусть сделает другой или пусть останется несделанным."], ["Попросить помощи", "Попросите о помощи в одной мелочи: передать, принести, подержать. Заметьте, что чувствуете, когда принимаете."], ["Время для себя", "Поставьте в календарь 30 минут только для себя. И проведите их, даже если «всё горит»."], ["Отдохнуть без пользы", "Сделайте что-то совсем без пользы: полежать, посмотреть в окно, порисовать. Отдых не нужно заслуживать."], ["Что изменилось", "Перечитайте записи. От чего вы смогли отказаться за эти дни? Что случилось, когда вы не взяли на себя?"], ["Моя мера", "Напишите себе правило: «Я отвечаю за…, а за… — не я». И пройдите экспресс-тест ещё раз."]]}, "self": {"t": "Самооценка и чувства", "days": [["Голос критика", "Заметьте сегодня, когда внутренний критик что-то сказал. Запишите его фразу дословно. Чей это голос?"], ["Назвать чувство", "Три раза за день остановитесь и спросите: «Что я сейчас чувствую?» Выберите слово в дневнике. «Не знаю» — тоже ответ."], ["Как подруге", "Вечером напишите себе одну фразу так, как написали бы подруге после трудного дня."], ["Что я сделала хорошо", "Запишите три вещи, которые сегодня получились. Мелкие тоже считаются: встала, поела, ответила на письмо."], ["Откуда критик", "Кто в детстве оценивал вас строже всех? Мама-отличница, строгий отец, учитель, бабушка? Что они говорили?"], ["Четвёрка, а не лицо", "Вспомните, замечали ли взрослые ваши чувства — или больше оценки и поведение. Как вы научились прятать грусть?"], ["Я молодец?", "Заметьте, где вы сегодня ждали чужого одобрения. А что бы вы сами сказали о себе в этот момент?"], ["Хорошая или живая", "Где вы сегодня были «хорошей», а где — живой? Чем они отличаются по ощущению?"], ["Принять комплимент", "Если вас похвалят, скажите просто «спасибо». Без «да ладно» и «это несложно». Заметьте, что почувствуете."], ["Одна ошибка", "Позвольте себе одну маленькую неидеальность: отправить письмо без пятой проверки, оставить посуду. Заметьте, что будет."], ["Своё желание", "Сделайте сегодня одно дело просто потому, что вам хочется. Не нужно, не полезно — хочется."], ["Ответить критику", "Когда критик заговорит, ответьте ему: «Я слышу. Но сегодня я с тобой не согласна». Можно письменно."], ["Что изменилось", "Перечитайте записи. Где голос критика стал тише? Какие чувства вы научились замечать?"], ["Письмо себе", "Напишите себе письмо от лица того, кто вас любит без условий. И пройдите экспресс-тест ещё раз."]]}};
+const goal = g => { try { window.ym && window.ym(114231016, "reachGoal", g) } catch {} };
+const SITE = "https://treugol23-oss.github.io/shag/";
+document.addEventListener("click", e => { const a = e.target.closest('a[href^="https://t.me/"]'); if (a) goal("tg_click"); if (a && tg && tg.openTelegramLink) { e.preventDefault(); tg.openTelegramLink(a.href) } else if (a && tg && tg.openLink) { e.preventDefault(); tg.openLink(a.href) } });
 if (tg) { tg.ready(); tg.expand(); document.documentElement.dataset.theme = tg.colorScheme; }
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -703,13 +783,13 @@ async function addMonthly(p, e) {
 }
 
 /* ---------- навигация ---------- */
-const VIEWS = ["home", "diary", "evening", "traits", "test", "trait", "sos", "express"];
-const TAB_OF = { test: "traits", trait: "traits", sos: "home", express: "home" };
+const VIEWS = ["home", "diary", "evening", "traits", "test", "trait", "sos", "express", "put", "read", "group", "partners", "thanks"];
+const TAB_OF = { test: "traits", trait: "traits", sos: "home", express: "home", put: "home", read: "home", group: "home", partners: "home" };
 function go(v, arg) {
   VIEWS.forEach(x => $("v-" + x).hidden = x !== v);
   document.querySelectorAll(".tabbar button").forEach(b => b.setAttribute("aria-selected", b.dataset.go === (TAB_OF[v] || v)));
   window.scrollTo(0, 0);
-  ({ home: renderHome, diary: () => dtab("now"), evening: renderEvening, traits: renderTraits, test: () => startTest(), trait: () => renderTrait(arg), express: () => startExpress() }[v] || (() => {}))();
+  ({ home: renderHome, diary: () => dtab("now"), evening: renderEvening, traits: renderTraits, test: () => startTest(), trait: () => renderTrait(arg), express: () => startExpress(), put: renderPut }[v] || (() => {}))();
 }
 document.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) { go(b.dataset.go); haptic() } });
 
@@ -726,16 +806,49 @@ async function renderHome() {
     return `<i class="${days.has(dayKey(d)) ? "on" : ""}">${d.toLocaleDateString("ru-RU", { weekday: "short" })}</i>` }).join("");
   const today = dayKey(Date.now());
   const d = (await loadMonthly("e")).filter(x => dayKey(x.ts) === today).length;
-  $("home-diary").innerHTML = d ? `<span class="done-mark">Сегодня записей: ${d}</span>` : "1 минута · дневник чувств";
+  $("home-diary").innerHTML = d ? `<span class="done-mark">Сегодня: ${d}</span>` : "1 минута";
   const ev = (await loadMonthly("v")).some(x => dayKey(x.ts) === today);
-  $("home-eve").innerHTML = ev ? `<span class="done-mark">✓ Сегодня сделано</span>` : "Как прошёл день · 10-й шаг";
+  $("home-eve").innerHTML = ev ? `<span class="done-mark">✓ Сегодня сделано</span>` : "10-й шаг · вечером";
   const focus = await store.json("focus", null);
-  if (focus) { const t = TRAITS[focus - 1]; $("home-trait-t").textContent = "Черта недели: " + t.s.split(/[,:]/)[0];
-    $("home-trait-s").textContent = "Теория, упражнения и задание на неделю"; $("home-trait").onclick = () => go("trait", focus) }
-  else { $("home-trait-t").textContent = "Особенности характера"; $("home-trait-s").textContent = "Тест на 3 минуты: какие из 14 особенностей про меня"; $("home-trait").onclick = () => go("traits") }
+  if (focus) { const t = TRAITS[focus - 1]; $("home-trait-t").textContent = t.s.split(/[,:]/)[0];
+    $("home-trait-s").textContent = "черта недели"; $("home-trait").onclick = () => go("trait", focus) }
+  else { $("home-trait-t").textContent = "Особенности характера"; $("home-trait-s").textContent = "14 черт · тест"; $("home-trait").onclick = () => go("traits") }
   const ex = await store.json("express", null), hero = $("hero");
-  if (ex) { const z = ZONES[ex.zone]; hero.className = "hero done"; hero.innerHTML = `<span class="label">Мой шаг к себе</span><h2>${z ? esc(z.t) : "Результат теста"}</h2><p class="sub">${z ? esc(z.step) : ""}</p><span class="sub">Посмотреть результат ›</span>`; hero.onclick = e => { e.stopPropagation(); go("express"); showExpressResult(ex) }; hero.removeAttribute("data-go") }
+  if (ex) { const z = ZONES[ex.zone]; hero.className = "hero done"; hero.innerHTML = `<span class="label">Ваша главная тема</span><h2>${z ? esc(z.t) : "Результат теста"}</h2><span class="sub">Посмотреть результат ›</span>`; hero.onclick = e => { e.stopPropagation(); go("express"); showExpressResult(ex) }; hero.removeAttribute("data-go") }
+  const st = await putState();
+  if (!st) { $("put-btn-t").textContent = "Мой путь на 14 дней"; $("put-btn-s").textContent = ex ? "Начать: одно маленькое задание в день" : "Сначала короткий тест, потом задание на каждый день" }
+  else if (st.n > 14) { $("put-btn-t").textContent = "Путь пройден 🌿"; $("put-btn-s").textContent = "14 шагов позади. Посмотреть, что изменилось" }
+  else { $("put-btn-t").textContent = st.today ? "Шаг на сегодня сделан ✓" : `Мой шаг на сегодня · день ${st.n}`; $("put-btn-s").textContent = st.today ? "Следующий откроется завтра" : st.day[0] }
   showInstall();
+}
+
+$("share").onclick = async () => { const t = "«Шаг» — маленький шаг к себе каждый день. Бесплатно.";
+  if (tg && tg.openTelegramLink) return tg.openTelegramLink("https://t.me/share/url?url=" + encodeURIComponent(SITE) + "&text=" + encodeURIComponent(t));
+  try { if (navigator.share) return await navigator.share({ title: "Шаг", text: t, url: SITE }) } catch { return }
+  try { await navigator.clipboard.writeText(SITE); $("share").querySelector(".sub").textContent = "Ссылка скопирована ✓" } catch {} };
+/* ---------- ПУТЬ 14 ДНЕЙ ---------- */
+const STAGE = n => n <= 4 ? "Заметить" : n <= 8 ? "Понять" : n <= 12 ? "Сделать шаг" : "Подвести итог";
+async function putState() {
+  const ex = await store.json("express", null);
+  if (!ex || !ex.zone || !PUT[ex.zone]) return null;
+  let p = await store.json("put", null);
+  if (!p || p.zone !== ex.zone) { p = { zone: ex.zone, done: [] }; await store.put("put", p) }
+  const today = p.done.length && dayKey(p.done[p.done.length - 1]) === dayKey(Date.now());
+  const n = today ? p.done.length : p.done.length + 1;
+  return { p, n, today, zone: PUT[ex.zone], day: PUT[ex.zone].days[Math.min(n, 14) - 1] };
+}
+async function renderPut() {
+  const el = $("put-body"), st = await putState();
+  if (!st) { el.innerHTML = `<h2>Мой путь на 14 дней</h2><p>Каждый день одно маленькое задание на 3–5 минут. Чтобы подобрать задания именно вам, сначала пройдите короткий тест: 14 фраз, 2 минуты.</p><button class="primary" data-go="express">Пройти тест</button>`; return }
+  const dots = `<div class="dots">${Array.from({ length: 14 }, (_, i) => `<i class="${i < st.p.done.length ? "d" : i === st.n - 1 && !st.today ? "c" : ""}"></i>`).join("")}</div>`;
+  const past = st.p.done.length ? `<details class="more"><summary>Пройденные шаги (${st.p.done.length})</summary><div class="put-list" style="margin-top:8px">${st.p.done.map((ts, i) => `<div><span class="n">${i + 1}</span><span>${esc(st.zone.days[i][0])}</span></div>`).join("")}</div></details>` : "";
+  if (st.n > 14) { el.innerHTML = `<div class="put-card"><span class="label">Тема: ${esc(st.zone.t)}</span><h2>Путь пройден 🌿</h2>${dots}<p>Вы сделали 14 шагов. Это много. Пройдите тест ещё раз и посмотрите, что изменилось.</p></div>
+    <button class="primary" data-go="express">Пройти тест снова</button><button class="ghost" id="put-reset">Начать путь заново</button>${past}`;
+    $("put-reset").onclick = async () => { await store.put("put", { zone: st.p.zone, done: [] }); renderPut() }; return }
+  el.innerHTML = `<div class="put-card"><span class="label">День ${st.n} из 14 · ${STAGE(st.n)} · ${esc(st.zone.t)}</span><h2>${esc(st.day[0])}</h2><p>${esc(st.day[1])}</p>${dots}</div>
+    ${st.today ? `<div class="toast"><b>Шаг на сегодня сделан ✓</b><span>Следующий откроется завтра. Если хочется, запишите, что вы почувствовали.</span></div><button class="ghost" data-go="diary">Что я чувствую</button>`
+               : `<button class="primary" id="put-done">Сделано ✓</button><p class="sub">Не получилось сегодня — ничего страшного. Задание подождёт до завтра.</p>`}${past}`;
+  const b = $("put-done"); if (b) b.onclick = async () => { st.p.done.push(Date.now()); await store.put("put", st.p); haptic("success"); renderPut() };
 }
 
 /* ---------- ДНЕВНИК ---------- */
@@ -940,7 +1053,7 @@ async function finishExpress() {
   const score = Object.fromEntries(Object.entries(ZONES).map(([k, z]) => [k, z.tr.reduce((s, n) => s + byTrait[n], 0) / (z.tr.length * 2)]));
   const zone = Object.keys(score).sort((a, b) => score[b] - score[a])[0];
   const res = { ts: Date.now(), a: byTrait, score, zone: score[zone] > 0 ? zone : null };
-  await store.put("express", res); haptic("success"); showExpressResult(res);
+  await store.put("express", res); goal("express_done"); haptic("success"); showExpressResult(res);
 }
 function showExpressResult(res) {
   $("ex-bar").style.width = "100%";
@@ -948,11 +1061,12 @@ function showExpressResult(res) {
   if (!z) { $("ex-body").innerHTML = `<div class="zone"><h2>Сейчас ничего не откликнулось</h2><p>Так бывает: иногда черты видны не сразу. Можно вернуться к тесту позже или пройти полный тест по 14 чертам.</p></div>
     <button class="ghost" data-go="test">Полный тест: 14 черт</button><button class="ghost" id="ex-again">Пройти заново</button>`; $("ex-again").onclick = startExpress; return }
   const top = z.tr.filter(n => res.a[n] > 0).sort((a, b) => res.a[b] - res.a[a]).slice(0, 3);
-  $("ex-body").innerHTML = `<div class="zone"><span class="label">Ваша главная зона</span><h2>${esc(z.t)}</h2><p>${esc(z.txt)}</p>
+  $("ex-body").innerHTML = `<div class="zone"><span class="label">Ваша главная тема</span><h2>${esc(z.t)}</h2><p>${esc(z.txt)}</p>
       ${top.length ? `<span class="label">Сильнее всего откликнулось</span>${top.map(n => `<button class="card trait-row" data-tr="${n}"><span class="num">${n}</span><span>${esc(TRAITS[n - 1].s)}</span><span class="go">›</span></button>`).join("")}` : ""}</div>
     <div class="card"><span class="label">Ваш первый шаг · 3 минуты сегодня</span><p>${esc(z.step)}</p></div>
     <div class="card"><span class="label">Все зоны</span><div class="bars">${Object.entries(ZONES).map(([k, x]) => `<div><span>${esc(x.t)}</span><i style="width:${Math.max(4, Math.round(res.score[k] * 90))}px"></i></div>`).join("")}</div></div>
-    ${top.length ? `<button class="primary" id="ex-focus">Сделать «${esc(TRAITS[top[0] - 1].s.split(/[,:]/)[0])}» чертой недели</button>` : ""}
+    <button class="primary" data-go="put">Начать путь на 14 дней</button>
+    ${top.length ? `<button class="ghost" id="ex-focus">Сделать «${esc(TRAITS[top[0] - 1].s.split(/[,:]/)[0])}» чертой недели</button>` : ""}
     <button class="ghost" data-go="diary">Записать, что я сейчас чувствую</button>
     <button class="ghost" data-go="test">Полный тест: 14 черт</button>
     <button class="ghost" id="ex-again">Пройти заново</button>
@@ -1028,4 +1142,4 @@ if ("serviceWorker" in navigator && location.protocol === "https:" && document.q
 
 go("home");
 </script>
-</body></html>
+<script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js','ym');ym(114231016,'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:false});</script><noscript><div><img src="https://mc.yandex.ru/watch/114231016" style="position:absolute;left:-9999px" alt=""></div></noscript></body></html>
